@@ -1,0 +1,82 @@
+﻿@model IEnumerable<BillPay>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>BillPays</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BillPayID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayeeID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScheduleTimeUtc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Period)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BillPayStatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BillPayID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccountNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PayeeID)
+                </td>
+                <td>
+                    @item.Amount.ToString("C")
+                </td>
+                <td>
+                    @item.ScheduleTimeUtc.ToLocalTime().ToString("dd/MM/yyyy h:mm tt")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Period)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BillPayStatus)
+                </td>
+                <td>
+                    @if (@item.BillPayStatus == BillPayStatus.Blocked)
+                    {
+                        <form asp-action="BlockOrUnblock">
+                            <div class="form-group">
+                                <input type="submit" value="Unblock" class="btn btn-primary" />
+                                @Html.Hidden("id", item.BillPayID)
+                            </div>
+                        </form>
+                    } else
+                    {
+                        <form asp-action="BlockOrUnblock">
+                            <div class="form-group">
+                                <input type="submit" value="Block" class="btn btn-primary" />
+                                @Html.Hidden("id", item.BillPayID)
+                            </div>
+                        </form>
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

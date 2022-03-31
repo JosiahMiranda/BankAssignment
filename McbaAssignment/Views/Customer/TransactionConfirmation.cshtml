@@ -1,0 +1,43 @@
+﻿@model McbaAssignment.ViewModels.ConfirmTransactionViewModel
+@{
+    ViewData["Title"] = "Confirm Transaction";
+
+}
+<h1 class="display-5">Account Number: @Model.Id</h1>
+<h1 class="display-6">Amount: @Model.Amount.ToString("C")</h1>
+<h1 class="display-6">Comment: "@Model.Comment"</h1>
+<h1 class="display-6">Transaction Type: @Model.TransactionType </h1>
+@if (Model.DestinationAccountNumber != null){
+    <h1 class="display-6">Transferring to: @Model.DestinationAccountNumber </h1>
+}
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="TransactionConfirmation">
+            <div class="form-group">
+                <input type="submit" value="Confirm" class="btn btn-primary" />
+                @Html.Hidden("id", Model.Id)
+                @Html.Hidden("amount", Model.Amount)
+                @Html.Hidden("destinationAccountNumber", Model.DestinationAccountNumber)
+                @Html.Hidden("transactionType", Model.TransactionType)
+                @Html.Hidden("comment", Model.Comment)
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div class="form-group">
+                <input type="submit" value="Cancel" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to Accounts</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

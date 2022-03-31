@@ -1,0 +1,60 @@
+﻿@model BillPay
+
+@{
+    ViewData["Title"] = "Edit Bill";
+}
+
+<h1>Bill: @Model.BillPayID (@Model.BillPayStatus)</h1>
+
+<p>To edit any information, change the corresponding field and press 'Edit' on the bottom.</p>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditBill">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="AccountNumber" />
+            <input type="hidden" asp-for="BillPayID" />
+            <input type="hidden" asp-for="BillPayStatus" />
+            <div class="form-group">
+                <label asp-for="PayeeID" class="control-label"></label>
+                <input asp-for="PayeeID" class="form-control" />
+                <span asp-validation-for="PayeeID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScheduleTimeUtc" class="control-label">Scheduled Time</label>
+                <input asp-for="ScheduleTimeUtc" class="form-control"/>
+                <span asp-validation-for="ScheduleTimeUtc" class="text-danger"></span>
+            </div>
+@*            <div class="form-group">
+                <label for="ScheduleTimeUtc" class="control-label">Amount:</label>
+                <input id="ScheduleTimeUtc" name="ScheduleTimeUtc" class="form-control" value="@ViewBag.Amount?.ToString("0.00")"
+                    data-val="true" data-val-number="The field Amount must be a number."
+                    data-val-required="The Amount field is required." />
+                @Html.ValidationMessage("ScheduleTimeUtc", new { @class = "text-danger" })
+            </div>*@
+            <div class="form-group">
+                <label asp-for="Period" class="control-label"></label>
+                <input asp-for="Period" class="form-control" />
+                <span asp-validation-for="Period" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Edit/Retry" class="btn btn-primary" />
+            </div>
+        </form>
+        
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

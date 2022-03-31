@@ -1,0 +1,42 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@model IPagedList<Transaction>
+@{
+    ViewData["Title"] = "My Statements";
+    var account = (Account) ViewBag.Account;
+}
+
+<div>
+    <h1 class="display-4">My Statement for Account: @account.AccountNumber</h1>
+    <h2 class="display-5">Current Balance: @account.Balance.ToString("C")</h2>
+    
+    <h3>Your Transactions</h3>
+    <table class="table table-striped">
+        <tr>
+            <th>@Html.DisplayNameFor(x => x[0].TransactionID)</th>
+            <th>@Html.DisplayNameFor(x => x[0].TransactionType)</th>
+            <th>@Html.DisplayNameFor(x => x[0].DestinationAccountNumber)</th>
+            <th>@Html.DisplayNameFor(x => x[0].Amount)</th>
+            <th>@Html.DisplayNameFor(x => x[0].Comment)</th>
+            <th>@Html.DisplayNameFor(x => x[0].TransactionTimeUtc)</th>
+        </tr>
+        @foreach(var transaction in Model) {
+            <tr>
+                <td>@Html.DisplayFor(x => transaction.TransactionID)</td>
+                <td>@Html.DisplayFor(x => transaction.TransactionType)</td>
+                <td>@Html.DisplayFor(x => transaction.DestinationAccountNumber)</td>
+                <td>@transaction.Amount.ToString("C")</td>
+                <td>@Html.DisplayFor(x => transaction.Comment)</td>
+                <td>@transaction.TransactionTimeUtc.ToLocalTime().ToString("dd/MM/yyyy h:mm tt")</td>
+            </tr>
+        }
+    </table>
+    
+    @Html.PagedListPager(Model, page => Url.Action("MyStatements", new { page }),
+        new PagedListRenderOptions {
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" }
+        })
+</div>
+

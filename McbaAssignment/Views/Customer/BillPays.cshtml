@@ -1,0 +1,57 @@
+﻿@model List<BillPay>
+@{
+    ViewData["Title"] = "BillPay";
+    var account = (Account) ViewBag.Account;
+}
+<h1 class="display-4">BillPay for Account: @account.AccountNumber</h1>
+@if (!Model.Any())
+{
+    <h1>There are no bills to pay.</h1>
+} else
+{
+
+<div>
+    
+    <table class="table table-striped">
+        <tr>
+            <th>@Html.DisplayNameFor(x => x[0].BillPayID)</th>
+            <th>@Html.DisplayNameFor(x => x[0].PayeeID)</th>
+            <th>@Html.DisplayNameFor(x => x[0].Amount)</th>
+            <th>@Html.DisplayNameFor(x => x[0].ScheduleTimeUtc)</th>
+            <th>@Html.DisplayNameFor(x => x[0].Period)</th>
+            <th>@Html.DisplayNameFor(x => x[0].BillPayStatus)</th>
+            <th></th>
+        </tr>
+        @foreach(var billPay in Model) {
+            <tr>
+                <td>@Html.DisplayFor(x => billPay.BillPayID)</td>
+                <td>@Html.DisplayFor(x => billPay.PayeeID)</td>
+                <td>@billPay.Amount.ToString("C")</td>
+                <td>@billPay.ScheduleTimeUtc.ToLocalTime().ToString("dd/MM/yyyy h:mm tt")</td>
+                <td>@Html.DisplayFor(x => billPay.Period)</td>
+                <td>@billPay.GetStatusString()</td>
+                <td>
+                        @if (@billPay.BillPayStatus != BillPayStatus.Blocked)
+                        {
+                            <a class="btn btn-primary"
+                                asp-action="EditBill" asp-route-id="@billPay.BillPayID">Modify</a>
+                        } 
+                    <a class="btn btn-primary"
+                        asp-action="DeleteBill" asp-route-id="@billPay.BillPayID">Delete</a>
+                </td>
+            </tr>
+        }
+    </table>
+    
+</div>
+
+}
+
+<div>
+    <a class="btn btn-primary" asp-action="CreateNewBill" asp-route-id="@account.AccountNumber">Create New Bill</a>
+</div>    
+
+<div>
+    <a asp-action="Index">Back to Accounts</a>
+</div>
+

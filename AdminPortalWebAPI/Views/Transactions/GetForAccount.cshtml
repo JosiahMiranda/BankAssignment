@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Transaction>
+@{
+    ViewData["Title"] = "Transactions of Account";
+}
+
+<div>
+    <h1 class="display-4">Transactions for Account: @ViewBag.AccountNumber</h1>
+    <form method="get" asp-action="GetForAccount" asp-route-id=@ViewBag.AccountNumber>
+        <label class="control-label">From: </label>
+        <input name="fromDate" id="fromDate" type="date" placeholder="From" value="@ViewBag.FromDate"/>
+        <label class="control-label">To: </label>
+        <input name="toDate" id="toDate" type="date" placeholder="To" value="@ViewBag.ToDate"/>
+        <input type="submit" value="Filter" class="btn btn-primary" />
+    </form>
+
+    
+    <h3>Your Transactions</h3>
+    <table class="table table-striped">
+        <tr>
+            <th>@Html.DisplayNameFor(x => x.TransactionID)</th>
+            <th>@Html.DisplayNameFor(x => x.TransactionType)</th>
+            <th>@Html.DisplayNameFor(x => x.DestinationAccountNumber)</th>
+            <th>@Html.DisplayNameFor(x => x.Amount)</th>
+            <th>@Html.DisplayNameFor(x => x.Comment)</th>
+            <th>@Html.DisplayNameFor(x => x.TransactionTimeUtc)</th>
+        </tr>
+        @foreach(var transaction in Model) {
+            <tr>
+                <td>@Html.DisplayFor(x => transaction.TransactionID)</td>
+                <td>@Html.DisplayFor(x => transaction.TransactionType)</td>
+                <td>@Html.DisplayFor(x => transaction.DestinationAccountNumber)</td>
+                <td>@Html.DisplayFor(x => transaction.Amount)</td>
+                <td>@Html.DisplayFor(x => transaction.Comment)</td>
+                <td>@transaction.TransactionTimeUtc.ToLocalTime().ToString("dd/MM/yyyy h:mm tt")</td>
+            </tr>
+        }
+    </table>
+
+</div>
+
